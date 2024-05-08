@@ -10,14 +10,34 @@
       if ("geolocation" in navigator) {
         console.log("Geo Location Available");
 
-        navigator.geolocation.getCurrentPosition((position) => {
-          document.getElementById('latitude').textContent = position.coords.latitude
-          document.getElementById('longitude').textContent = position.coords.longitude
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          
+          const lat = position.coords.latitude
+          const long = position.coords.longitude
+          
+          document.getElementById('latitude').textContent = lat
+          document.getElementById('longitude').textContent = long
+          
+          const data = { lat, long }
+
+          const options = {
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+          }
+
+          const response = await fetch('/api', options)
+          const datax = await response.json()
+          console.log(datax);
+
         });
 
       } else {
         console.log("Geo Location Not Available");
       }
+
     </script>
     <h2>Welcome to App</h2>
     <p>Latitude: <span id="latitude"></span>&deg;</p>
